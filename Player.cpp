@@ -25,7 +25,7 @@ void Player::Initialize()
     transform_.scale_.z = 0.5;
     
     //モデルデータのロード
-    hModel_ = Model::Load("Assets\\torus.fbx");
+    hModel_ = Model::Load("Assets\\test.fbx");
     assert(hModel_ >= 0);
     //Instantiate<MiniOden>(this);
 }
