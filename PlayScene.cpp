@@ -16,14 +16,14 @@ void PlayScene::Initialize()
 {
 	
 	Instantiate<Player>(this);
-	Instantiate<TestModel>(this);
+	//Instantiate<TestModel>(this);
 	
 }
 
 //XV
 void PlayScene::Update()
 {
-	if (count >= 60)
+	/*if (count >= 60)
 	{
 		Instantiate<TestModel>(this);
 		count = 0;
@@ -43,7 +43,7 @@ void PlayScene::Update()
 		}
 	}
 	
-	count++;
+	count++;*/
 }
 
 //•`‰æ
