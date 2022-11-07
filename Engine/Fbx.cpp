@@ -237,7 +237,7 @@ HRESULT Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 				MessageBox(NULL, "テクスチャの作成に失敗しました", "エラー", MB_OK);
 				return hr;
 			}
-			return S_OK;
+			
 		}
 
 		//テクスチャ無し
