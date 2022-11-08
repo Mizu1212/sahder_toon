@@ -159,5 +159,6 @@
   <ItemGroup>
     <FxCompile Include="Simple2D.hlsl" />
     <FxCompile Include="Simple3D.hlsl" />
+    <FxCompile Include="Test.hlsl" />
   </ItemGroup>
 </Project>
