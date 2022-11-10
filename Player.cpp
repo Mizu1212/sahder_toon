@@ -33,7 +33,7 @@ void Player::Initialize()
 //çXêV
 void Player::Update()
 {
-    transform_.rotate_.y += 1.5;
+    transform_.rotate_.y++;
    /* if (Input::IsKey(DIK_A))
     {
         transform_.position_.x -= 0.1f;

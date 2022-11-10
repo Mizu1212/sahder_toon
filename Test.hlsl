@@ -1,6 +1,14 @@
-//頂点シェーダー
-float4 VS( float4 pos : POSITION ) : SV_POSITION//:セマンティクスは何の情報か　
+cbuffer gloabl
 {
+	float4x4 matW;   //行列を扱う型
+};
+
+
+
+//頂点シェーダー
+float4 VS(float4 pos : POSITION) : SV_POSITION//:セマンティクスは何の情報か　
+{
+	pos = mul(pos,matW);   //ベクトルを行列にする関数
 	return pos;
 }
 

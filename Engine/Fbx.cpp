@@ -277,19 +277,19 @@ void Fbx::Draw(Transform& transform)
 
 		
 		CONSTANT_BUFFER cb;
+		//cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
+		//cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());//影の付き方　法線
+		//cb.isTexture = pMaterialList_[i].pTexture != nullptr;
 		cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
-		cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());//影の付き方　法線
-		cb.isTexture = pMaterialList_[i].pTexture != nullptr;
-		
-		if (cb.isTexture) {
+		/*if (cb.isTexture) {
 			
 			ID3D11SamplerState* pSampler = pMaterialList_[i].pTexture->GetSampler();
 			Direct3D::pContext->PSSetSamplers(0, 1, &pSampler);
 			ID3D11ShaderResourceView* pSRV = pMaterialList_[i].pTexture->GetSRV();
 			Direct3D::pContext->PSSetShaderResources(0, 1, &pSRV);
 			
-		}
-		cb.diffuseColor = pMaterialList_[i].diffuse;
+		}*/
+		//cb.diffuseColor = pMaterialList_[i].diffuse;
 		D3D11_MAPPED_SUBRESOURCE pdata;
 		Direct3D::pContext->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
 		memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る
