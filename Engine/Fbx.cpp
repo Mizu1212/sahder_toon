@@ -205,7 +205,7 @@ HRESULT Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 		//テクスチャ情報
 		FbxProperty  lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
 
-		//テクスチャの数数
+		//テクスチャの数
 		int fileTextureCount = lProperty.GetSrcObjectCount<FbxFileTexture>();
 
 		//テクスチャあり
@@ -281,14 +281,23 @@ void Fbx::Draw(Transform& transform)
 		//cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());//影の付き方　法線
 		//cb.isTexture = pMaterialList_[i].pTexture != nullptr;
 		cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
-		/*if (cb.isTexture) {
+		cb.color = pMaterialList_[i].diffuse;
+		if (pMaterialList_[i].pTexture == nullptr)
+		{
+			cb.isTexture = false;
+		}
+		else
+		{
+			cb.isTexture = true;
+		}
+		if (pMaterialList_[i].pTexture) {
 			
 			ID3D11SamplerState* pSampler = pMaterialList_[i].pTexture->GetSampler();
 			Direct3D::pContext->PSSetSamplers(0, 1, &pSampler);
 			ID3D11ShaderResourceView* pSRV = pMaterialList_[i].pTexture->GetSRV();
 			Direct3D::pContext->PSSetShaderResources(0, 1, &pSRV);
 			
-		}*/
+		}
 		//cb.diffuseColor = pMaterialList_[i].diffuse;
 		D3D11_MAPPED_SUBRESOURCE pdata;
 		Direct3D::pContext->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
