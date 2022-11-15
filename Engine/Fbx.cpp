@@ -281,6 +281,7 @@ void Fbx::Draw(Transform& transform)
 		//cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());//‰e‚Ì•t‚«•û@–@ü
 		//cb.isTexture = pMaterialList_[i].pTexture != nullptr;
 		cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
+		cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
 		cb.color = pMaterialList_[i].diffuse;
 		if (pMaterialList_[i].pTexture == nullptr)
 		{
