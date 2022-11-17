@@ -26,7 +26,9 @@ class Fbx
 	{
 		XMMATRIX matWVP;
 		XMMATRIX matNormal;
+		XMMATRIX matW;
 		XMFLOAT4 color;
+		XMFLOAT4 camPos;
 		int      isTexture;
 		
 		//XMMATRIX	matWVP;       // ワールド・ビュー・プロジェクションの合成行列
