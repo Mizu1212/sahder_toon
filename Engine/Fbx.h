@@ -19,6 +19,8 @@ class Fbx
 	{
 		Texture* pTexture;   //Texture型のポインタ
 		XMFLOAT4	diffuse; //マテリアル　元のカラー
+		XMFLOAT4    ambient;
+		XMFLOAT4    specular;
 	};
 
 	//コンスタントバッファー

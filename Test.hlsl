@@ -18,6 +18,8 @@ struct VS_OUT
 	float2 uv  : TEXCOORD;
 	float4 color : COLOR0;
 	float4 specular : COLOR1;
+	float4 normal : NORMAL;
+	float4 reflect : REFLECT;
 };
 
 //頂点シェーダー
@@ -30,15 +32,18 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)//
 	float4 light = float4(1, 1, -1, 0);
 	light = normalize(light);
 	normal = mul(normal, matNormal);//法線回転
+	normal.w = 0;
 	outData.color = dot(normal, light);
 	outData.color = clamp(outData.color, 0, 1); //切り詰め
 	
 	float4 V = normalize(mul(pos, matW) - camPos);//視点から
 	float4 R = reflect(light, normal);
-	
+	outData.normal = normalize(mul(pos, matW) - camPos);
+	outData.reflect = reflect(light, normal);
 	//outData.specular = pow(clamp(dot(R, V),0,1), 200) * 1;
 	outData.specular = clamp(dot(R, V),0,1);
 	outData.specular = pow(outData.specular, 10);
+	
 
 	return outData;
 }
@@ -49,17 +54,17 @@ float4 PS(VS_OUT inData) : SV_TARGET //SVは二次元 ピクセルシェーダーの引数は頂点
 
 	float4 diffuse;
     float4 ambient;
-
-
+	float4 specular;
+	specular = pow(clamp(dot(inData.normal, inData.reflect), 0, 1), 5) * 1;
 	if (isTexture)
 	{
 		diffuse = tex.Sample(smp, inData.uv)*inData.color;
-		ambient = tex.Sample(smp, inData.uv) * 0.3;
+		ambient = tex.Sample(smp, inData.uv) * 0.8;
 	}
     else
     {
 		diffuse = color*inData.color;
 		ambient = color * 0.3;
     }
-	return /*diffuse + ambient +*/ inData.specular;
+	return diffuse + ambient + specular;
 }
