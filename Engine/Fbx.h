@@ -21,6 +21,7 @@ class Fbx
 		XMFLOAT4	diffuse; //マテリアル　元のカラー
 		XMFLOAT4    ambient;
 		XMFLOAT4    specular;
+		XMFLOAT4    shiness;
 	};
 
 	//コンスタントバッファー
