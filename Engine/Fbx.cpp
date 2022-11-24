@@ -202,19 +202,20 @@ HRESULT Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 		FbxSurfacePhong* pMaterial = (FbxSurfacePhong*)pNode->GetMaterial(i);
 		FbxDouble3 diffuse = pMaterial->Diffuse;
 		FbxDouble3 ambient = pMaterial->Ambient;
-		FbxDouble3 specular;
-		FbxDouble3 shiness;
+		FbxDouble3 specular = FbxDouble3(1,1,1);
+		FbxDouble3 shiness = FbxDouble3(1,1,1);
 		if (pMaterial->GetClassId().Is(FbxSurfacePhong::ClassId))
 		{
 			 specular = pMaterial->Specular;
 			 shiness = pMaterial->Shininess;
+			 
 		}
 		
 		pMaterialList_[i].diffuse = XMFLOAT4((float)diffuse[0], (float)diffuse[1], (float)diffuse[2], 1.0f);
 		pMaterialList_[i].ambient = XMFLOAT4((float)ambient[0], (float)ambient[1], (float)ambient[2], 1.0f);
 		pMaterialList_[i].specular = XMFLOAT4((float)specular[0], (float)specular[1], (float)specular[2], 1.0f);
 		pMaterialList_[i].shiness = XMFLOAT4((float)shiness[0], (float)shiness[1], (float)shiness[2], 1.0f);
-
+		
 		//i番目のマテリアル情報を取得
 		//FbxSurfaceMaterial* pMaterial = pNode->GetMaterial(i);
 
@@ -260,7 +261,7 @@ HRESULT Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 		else
 		{
 			pMaterialList_[i].pTexture = nullptr;
-
+			
 			//マテリアルの色
 			//FbxSurfaceLambert* pMaterial = (FbxSurfaceLambert*)pNode->GetMaterial(i);
 			//FbxDouble3  diffuse = pMaterial->Diffuse;
@@ -300,7 +301,11 @@ void Fbx::Draw(Transform& transform)
 		cb.matW = XMMatrixTranspose(transform.GetWorldMatrix());
 		cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
 		XMStoreFloat4(&(cb.camPos) , Camera::GetPosition());
-		cb.color = pMaterialList_[i].diffuse;
+		cb.diffusecolor = pMaterialList_[i].diffuse;
+		cb.ambientcolor = pMaterialList_[i].ambient;
+		cb.specularcolor = pMaterialList_[i].specular;
+		cb.shinesscolor = pMaterialList_[i].shiness;
+		
 		if (pMaterialList_[i].pTexture == nullptr)
 		{
 			cb.isTexture = false;

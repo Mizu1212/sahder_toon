@@ -7,9 +7,13 @@ cbuffer gloabl
 	float4x4 matWVP;   //行列を扱う型
 	float4x4 matNormal;
 	float4x4 matW;
-	float4   color;    //マテリアルの色
+	float4   diffusecolor;    //マテリアルの色
+	float4   ambientcolor;
+	float4   specularcolor;
+	float4   shinesscolor;
 	float4   camPos;
 	bool     isTexture;//テクスチャが貼られているかどうか
+	
 };
 
 struct VS_OUT
@@ -48,23 +52,27 @@ float4 PS(VS_OUT inData) : SV_TARGET //SVは二次元 ピクセルシェーダーの引数は頂点
     float4 ambient;
 	float4 specular;
 
-	float4 light = float4(1, 1, -1, 0);
+	float4 light = float4(1, 1, -1, 0);//ライト
 	light = normalize(light);
 
-	float4 S = dot(inData.normal, light);
+	float4 S = dot(inData.normal, light);//内積
 	S = clamp(S, 0, 1);
 	
 	float4 R = reflect(light, inData.normal);
-	specular = pow(clamp(dot(R, inData.V), 0, 1), 10) * 3;
+	specular = pow(clamp(dot(R, inData.V), 0, 1), shinesscolor) * specularcolor;
+	//specular = pow(clamp(dot(R, inData.V), 0, 1), 10) * 3;
 	if (isTexture)
 	{
 		diffuse = tex.Sample(smp, inData.uv)*S;
-		ambient = tex.Sample(smp, inData.uv) * 0.2;
+		ambient = tex.Sample(smp, inData.uv) * ambientcolor;
+		//ambient = tex.Sample(smp, inData.uv) *0.2;
 	}
     else
     {
-		diffuse = color*S;
-		ambient = color * 0.2;
+		diffuse = diffusecolor*S;
+		ambient = diffusecolor * ambientcolor;
+		//ambient = diffusecolor * 0.2;
     }
+	
 	return diffuse + ambient + specular;
 }

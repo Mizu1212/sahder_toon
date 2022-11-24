@@ -22,6 +22,7 @@ class Fbx
 		XMFLOAT4    ambient;
 		XMFLOAT4    specular;
 		XMFLOAT4    shiness;
+		
 	};
 
 	//コンスタントバッファー
@@ -30,9 +31,13 @@ class Fbx
 		XMMATRIX matWVP;
 		XMMATRIX matNormal;
 		XMMATRIX matW;
-		XMFLOAT4 color;
+		XMFLOAT4 diffusecolor;
+		XMFLOAT4 ambientcolor;
+		XMFLOAT4 specularcolor;
+		XMFLOAT4 shinesscolor;
 		XMFLOAT4 camPos;
 		int      isTexture;
+		
 		
 		//XMMATRIX	matWVP;       // ワールド・ビュー・プロジェクションの合成行列
 		//XMMATRIX	matNormal;    //法線
