@@ -202,8 +202,8 @@ HRESULT Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 		FbxSurfacePhong* pMaterial = (FbxSurfacePhong*)pNode->GetMaterial(i);
 		FbxDouble3 diffuse = pMaterial->Diffuse;
 		FbxDouble3 ambient = pMaterial->Ambient;
-		FbxDouble3 specular = FbxDouble3(1,1,1);
-		FbxDouble3 shiness = FbxDouble3(1,1,1);
+		FbxDouble3 specular = FbxDouble3(0,0,0);
+		FbxDouble shiness = 1;
 		if (pMaterial->GetClassId().Is(FbxSurfacePhong::ClassId))
 		{
 			 specular = pMaterial->Specular;
@@ -214,7 +214,7 @@ HRESULT Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 		pMaterialList_[i].diffuse = XMFLOAT4((float)diffuse[0], (float)diffuse[1], (float)diffuse[2], 1.0f);
 		pMaterialList_[i].ambient = XMFLOAT4((float)ambient[0], (float)ambient[1], (float)ambient[2], 1.0f);
 		pMaterialList_[i].specular = XMFLOAT4((float)specular[0], (float)specular[1], (float)specular[2], 1.0f);
-		pMaterialList_[i].shiness = XMFLOAT4((float)shiness[0], (float)shiness[1], (float)shiness[2], 1.0f);
+		pMaterialList_[i].shiness = (float)shiness;
 		
 		//i”Ô–Ú‚Ìƒ}ƒeƒŠƒAƒ‹î•ñ‚ğæ“¾
 		//FbxSurfaceMaterial* pMaterial = pNode->GetMaterial(i);

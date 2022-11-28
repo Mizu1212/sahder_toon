@@ -21,7 +21,7 @@ class Fbx
 		XMFLOAT4	diffuse; //マテリアル　元のカラー
 		XMFLOAT4    ambient;
 		XMFLOAT4    specular;
-		XMFLOAT4    shiness;
+		float   shiness;
 		
 	};
 
@@ -34,8 +34,8 @@ class Fbx
 		XMFLOAT4 diffusecolor;
 		XMFLOAT4 ambientcolor;
 		XMFLOAT4 specularcolor;
-		XMFLOAT4 shinesscolor;
 		XMFLOAT4 camPos;
+		float shinesscolor;
 		int      isTexture;
 		
 		
