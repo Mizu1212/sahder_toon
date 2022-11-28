@@ -11,7 +11,7 @@ cbuffer gloabl
 	float4   ambientcolor;
 	float4   specularcolor;
 	float4   camPos;
-	float   shinesscolor;
+	float   shiness;
 	bool     isTexture;//テクスチャが貼られているかどうか
 	
 };
@@ -59,7 +59,7 @@ float4 PS(VS_OUT inData) : SV_TARGET //SVは二次元 ピクセルシェーダーの引数は頂点
 	S = clamp(S, 0, 1);
 	
 	float4 R = reflect(light, inData.normal);
-	specular = pow(clamp(dot(R, inData.V), 0, 1), shinesscolor) * specularcolor * 2;
+	specular = pow(clamp(dot(R, inData.V), 0, 1), shiness) * specularcolor * 2;
 	//specular = pow(clamp(dot(R, inData.V), 0, 1), 10) * 3;
 	if (isTexture)
 	{

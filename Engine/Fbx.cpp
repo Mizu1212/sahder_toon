@@ -304,7 +304,7 @@ void Fbx::Draw(Transform& transform)
 		cb.diffusecolor = pMaterialList_[i].diffuse;
 		cb.ambientcolor = pMaterialList_[i].ambient;
 		cb.specularcolor = pMaterialList_[i].specular;
-		cb.shinesscolor = pMaterialList_[i].shiness;
+		cb.shiness = pMaterialList_[i].shiness;
 		
 		if (pMaterialList_[i].pTexture == nullptr)
 		{
