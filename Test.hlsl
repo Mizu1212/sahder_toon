@@ -1,6 +1,8 @@
 Texture2D tex : register(t0); //どのテクスチャを使うかを入れる
 SamplerState smp : register(s0);
 
+Texture2D texToon : register(t1); //どのテクスチャを使うかを入れる
+
 
 cbuffer gloabl
 {
@@ -61,21 +63,26 @@ float4 PS(VS_OUT inData) : SV_TARGET //SVは二次元 ピクセルシェーダーの引数は頂点
 		S = 0.3;
 	else
 		S = 1;*/
+	float2 uv;
+	uv.x = S;
+	uv.y = 0;
+	//return texToon.Sample(smp, uv);
+	
 	float4 R = reflect(light, inData.normal);
 	specular = pow(clamp(dot(R, inData.V), 0, 1), shiness) * specularcolor * 2;
 	//specular = pow(clamp(dot(R, inData.V), 0, 1), 10) * 3;
 	if (isTexture)
 	{
-		diffuse = tex.Sample(smp, inData.uv)*S;
+		diffuse = tex.Sample(smp, inData.uv)* texToon.Sample(smp, uv);
 		ambient = tex.Sample(smp, inData.uv) * ambientcolor;
 		//ambient = tex.Sample(smp, inData.uv) *0.2;
 	}
     else
     {
-		diffuse = diffusecolor*S;
+		diffuse = diffusecolor* texToon.Sample(smp, uv);
 		ambient = diffusecolor * ambientcolor;
 		//ambient = diffusecolor * 0.2;
     }
 	
-	return diffuse + ambient + specular;
+	return diffuse /*+ ambient*/ + specular;
 }

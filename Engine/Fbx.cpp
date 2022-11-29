@@ -67,6 +67,11 @@ HRESULT Fbx::Load(std::string fileName)
 	//マネージャ解放
 	pFbxManager->Destroy();
 
+
+	pTexToon_ = new Texture;
+	pTexToon_->Load(L"Assets\\無題.png");
+
+
     return S_OK;
 }
 
@@ -322,6 +327,9 @@ void Fbx::Draw(Transform& transform)
 			Direct3D::pContext->PSSetShaderResources(0, 1, &pSRV);
 			
 		}
+		ID3D11ShaderResourceView* pSRVToon = pTexToon_->GetSRV();
+		Direct3D::pContext->PSSetShaderResources(1, 1, &pSRVToon);
+
 		//cb.diffuseColor = pMaterialList_[i].diffuse;
 		D3D11_MAPPED_SUBRESOURCE pdata;
 		Direct3D::pContext->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
@@ -335,6 +343,8 @@ void Fbx::Draw(Transform& transform)
 //解放
 void Fbx::Release()
 {
+	pTexToon_->Release();
+	SAFE_DELETE(pTexToon_);
     SAFE_RELEASE(pVertexBuffer_);
 	for (int i = 0; i < materialCount_; i++)
 	{

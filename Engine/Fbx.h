@@ -52,6 +52,8 @@ class Fbx
 		XMVECTOR normal;   //法線
 	};
 
+	Texture* pTexToon_;
+
 	int vertexCount_;	//頂点数
 	int polygonCount_;	//ポリゴン数
 	int materialCount_;	//マテリアルの個数
