@@ -57,7 +57,10 @@ float4 PS(VS_OUT inData) : SV_TARGET //SVは二次元 ピクセルシェーダーの引数は頂点
 
 	float4 S = dot(inData.normal, light);//内積
 	S = clamp(S, 0, 1);
-	
+	/*if (S.r < 0.3)
+		S = 0.3;
+	else
+		S = 1;*/
 	float4 R = reflect(light, inData.normal);
 	specular = pow(clamp(dot(R, inData.V), 0, 1), shiness) * specularcolor * 2;
 	//specular = pow(clamp(dot(R, inData.V), 0, 1), 10) * 3;
