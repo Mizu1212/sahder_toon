@@ -43,7 +43,7 @@ HRESULT Quad::Initialize(LPCWSTR fileName)
 //描画
 void Quad::Draw(Transform transform)
 {
-	Direct3D::SetShader(SHADER_3D);
+	Direct3D::SetShader(SHADER_OUTLINE);
 	transform.Calclation();
 	//コンスタントバッファに情報を渡す
 	PassDataToCB(transform.GetWorldMatrix(),transform.GetNormalMatrix());

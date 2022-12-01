@@ -86,3 +86,19 @@ float4 PS(VS_OUT inData) : SV_TARGET //SVは二次元 ピクセルシェーダーの引数は頂点
 	
 	return diffuse /*+ ambient*/ + specular;
 }
+
+//輪郭表示用頂点シェーダー
+float4 VS_Outline(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL) : SV_POSITION
+{
+	normal.w = 0;
+	pos += normal*0.1;
+
+	pos = mul(pos, matWVP);
+	return pos;
+}
+
+//輪郭表示用のピクセルシェーダー
+float4 PS_Outline(VS_OUT inData) : SV_Target
+{
+	return float4(0,0,0,1);
+}

@@ -31,7 +31,7 @@ struct VS_OUT
 //───────────────────────────────────────
 // 頂点シェーダ
 //───────────────────────────────────────
-VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)//セマンティクス　何の情報が入っているか
+VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 {
 	//ピクセルシェーダーへ渡す情報
 
@@ -72,4 +72,17 @@ float4 PS(VS_OUT inData) : SV_Target
 	{
 		return diffuseColor * inData.color;
     }
+}
+
+//輪郭表示用頂点シェーダー
+float4 VS_Outline(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL) : SV_POSITION
+{
+	pos = mul(pos, matWVP);
+	return pos;
+}
+
+//輪郭表示用のピクセルシェーダー
+float4 PS_Outline(VS_OUT inData) : SV_Target
+{
+	return float4 (0,0,0,1);
 }

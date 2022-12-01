@@ -13,7 +13,8 @@ using namespace DirectX;
 enum SHADER_TYPE 
 {
 	SHADER_2D,
-	SHADER_3D,
+	SHADER_OUTLINE,
+	SHADER_TOON,
 	SHADER_MAX
 };
 
@@ -31,7 +32,8 @@ namespace Direct3D
 
 	//シェーダー準備
 	HRESULT InitShader();
-	HRESULT InitShader3D();
+	HRESULT InitShaderOutline();
+	HRESULT InitShaderToon();
 	HRESULT InitShader2D();
 
 	//シェーダーを設定

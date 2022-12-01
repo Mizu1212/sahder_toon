@@ -277,68 +277,74 @@ HRESULT Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 //描画
 void Fbx::Draw(Transform& transform)
 {
-	Direct3D::SetShader(SHADER_3D);
+	Direct3D::SetShader(SHADER_OUTLINE);
 	
-
-
-	//頂点バッファ
-	UINT stride = sizeof(VERTEX);
-	UINT offset = 0;
-	Direct3D::pContext->IASetVertexBuffers(0, 1, &pVertexBuffer_, &stride, &offset);
-	for (int i = 0; i < materialCount_; i++)
+	for (int j = 0; j < 2; j++)
 	{
-
-		// インデックスバッファーをセット
-		stride = sizeof(int);
-		offset = 0;
-		Direct3D::pContext->IASetIndexBuffer(pIndexBuffer_[i], DXGI_FORMAT_R32_UINT, 0);
-
-		//コンスタントバッファ
-		Direct3D::pContext->VSSetConstantBuffers(0, 1, &pConstantBuffer_);	//頂点シェーダー用	
-		Direct3D::pContext->PSSetConstantBuffers(0, 1, &pConstantBuffer_);	//ピクセルシェーダー用
-
-		
-		CONSTANT_BUFFER cb;
-		//cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
-		//cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());//影の付き方　法線
-		//cb.isTexture = pMaterialList_[i].pTexture != nullptr;
-		cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
-		cb.matW = XMMatrixTranspose(transform.GetWorldMatrix());
-		cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
-		XMStoreFloat4(&(cb.camPos) , Camera::GetPosition());
-		cb.diffusecolor = pMaterialList_[i].diffuse;
-		cb.ambientcolor = pMaterialList_[i].ambient;
-		cb.specularcolor = pMaterialList_[i].specular;
-		cb.shiness = pMaterialList_[i].shiness;
-		
-		if (pMaterialList_[i].pTexture == nullptr)
+		//頂点バッファ
+		UINT stride = sizeof(VERTEX);
+		UINT offset = 0;
+		Direct3D::pContext->IASetVertexBuffers(0, 1, &pVertexBuffer_, &stride, &offset);
+		for (int i = 0; i < materialCount_; i++)
 		{
-			cb.isTexture = false;
-		}
-		else
-		{
-			cb.isTexture = true;
-		}
-		if (pMaterialList_[i].pTexture) {
-			
-			ID3D11SamplerState* pSampler = pMaterialList_[i].pTexture->GetSampler();
-			Direct3D::pContext->PSSetSamplers(0, 1, &pSampler);
-			ID3D11ShaderResourceView* pSRV = pMaterialList_[i].pTexture->GetSRV();
-			Direct3D::pContext->PSSetShaderResources(0, 1, &pSRV);
-			
-		}
-		ID3D11ShaderResourceView* pSRVToon = pTexToon_->GetSRV();
-		Direct3D::pContext->PSSetShaderResources(1, 1, &pSRVToon);
 
-		//cb.diffuseColor = pMaterialList_[i].diffuse;
-		D3D11_MAPPED_SUBRESOURCE pdata;
-		Direct3D::pContext->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
-		memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る
-		
-		Direct3D::pContext->Unmap(pConstantBuffer_, 0);	//再開
-		//描画
-		Direct3D::pContext->DrawIndexed(polygonCount_ * 3, 0, 0);
+			// インデックスバッファーをセット
+			stride = sizeof(int);
+			offset = 0;
+			Direct3D::pContext->IASetIndexBuffer(pIndexBuffer_[i], DXGI_FORMAT_R32_UINT, 0);
+
+			//コンスタントバッファ
+			Direct3D::pContext->VSSetConstantBuffers(0, 1, &pConstantBuffer_);	//頂点シェーダー用	
+			Direct3D::pContext->PSSetConstantBuffers(0, 1, &pConstantBuffer_);	//ピクセルシェーダー用
+
+
+			CONSTANT_BUFFER cb;
+			//cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
+			//cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());//影の付き方　法線
+			//cb.isTexture = pMaterialList_[i].pTexture != nullptr;
+			cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
+			cb.matW = XMMatrixTranspose(transform.GetWorldMatrix());
+			cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
+			XMStoreFloat4(&(cb.camPos), Camera::GetPosition());
+			cb.diffusecolor = pMaterialList_[i].diffuse;
+			cb.ambientcolor = pMaterialList_[i].ambient;
+			cb.specularcolor = pMaterialList_[i].specular;
+			cb.shiness = pMaterialList_[i].shiness;
+
+			if (pMaterialList_[i].pTexture == nullptr)
+			{
+				cb.isTexture = false;
+			}
+			else
+			{
+				cb.isTexture = true;
+			}
+			if (pMaterialList_[i].pTexture) {
+
+				ID3D11SamplerState* pSampler = pMaterialList_[i].pTexture->GetSampler();
+				Direct3D::pContext->PSSetSamplers(0, 1, &pSampler);
+				ID3D11ShaderResourceView* pSRV = pMaterialList_[i].pTexture->GetSRV();
+				Direct3D::pContext->PSSetShaderResources(0, 1, &pSRV);
+
+			}
+			ID3D11ShaderResourceView* pSRVToon = pTexToon_->GetSRV();
+			Direct3D::pContext->PSSetShaderResources(1, 1, &pSRVToon);
+
+			//cb.diffuseColor = pMaterialList_[i].diffuse;
+			D3D11_MAPPED_SUBRESOURCE pdata;
+			Direct3D::pContext->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
+			memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る
+
+			Direct3D::pContext->Unmap(pConstantBuffer_, 0);	//再開
+			//描画
+			Direct3D::pContext->DrawIndexed(polygonCount_ * 3, 0, 0);
+		}
+
+		Direct3D::SetShader(SHADER_TOON);
+
 	}
+
+	
 }
 //解放
 void Fbx::Release()
